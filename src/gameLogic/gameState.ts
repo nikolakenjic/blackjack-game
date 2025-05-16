@@ -6,8 +6,15 @@ export interface Player {
   hand: Card[];
 }
 
+function dealCard(deck: Card[], player: Player) {
+  const card = deck.shift();
+  if (!card) throw new Error('Not enough cards in deck');
+
+  player.hand.push(card);
+}
+
 function dealInitialCards(deck: Card[]): {
-  updateDeck: Card[];
+  remainingDeck: Card[];
   player: Player;
   dealer: Player;
 } {
@@ -15,52 +22,13 @@ function dealInitialCards(deck: Card[]): {
   const dealer: Player = { hand: [], score: 0, name: 'Dealer' };
 
   //   take card from deck and give to player or dealer
-  const playerCard1 = deck.shift();
-  if (!playerCard1) {
-    throw new Error('Not enough cards in deck');
-  }
-  player.hand.push(playerCard1);
-
-  const dealerCard1 = deck.shift();
-  if (!dealerCard1) {
-    throw new Error('Not enough cards in deck');
-  }
-  dealer.hand.push(dealerCard1);
-
-  const playerCard2 = deck.shift();
-  if (!playerCard2) {
-    throw new Error('Not enough cards in deck');
-  }
-  player.hand.push(playerCard2);
-
-  const dealerCard2 = deck.shift();
-  if (!dealerCard2) {
-    throw new Error('Not enough cards in deck');
-  }
-  dealer.hand.push(dealerCard2);
-
-  //   // Take cards, 2 for player 2 for dealer
-  //   const playerCard1 = deck.shift();
-  //   const dealerCard1 = deck.shift();
-  //   const playerCard2 = deck.shift();
-  //   const dealerCard2 = deck.shift();
-
-  //   if (deck.length < 4) {
-  //     throw new Error('Not enough cards in deck');
-  //   }
-
-  //   if (!playerCard1 || !dealerCard1 || !playerCard2 || !dealerCard2) {
-  //     throw new Error('Not enough cards to deal');
-  //   }
-
-  //   // Add cards to player and dealer
-  //   player.hand.push(playerCard1);
-  //   player.hand.push(playerCard2);
-  //   dealer.hand.push(dealerCard1);
-  //   dealer.hand.push(dealerCard2);
+  dealCard(deck, player);
+  dealCard(deck, dealer);
+  dealCard(deck, player);
+  dealCard(deck, dealer);
 
   return {
-    updateDeck: deck,
+    remainingDeck: deck,
     player,
     dealer,
   };
