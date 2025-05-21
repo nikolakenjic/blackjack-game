@@ -6,14 +6,14 @@ export interface Player {
   hand: Card[];
 }
 
-function dealCard(deck: Card[], player: Player) {
+export function dealCard(deck: Card[], player: Player) {
   const card = deck.shift();
   if (!card) throw new Error('Not enough cards in deck');
 
   player.hand.push(card);
 }
 
-function calculateScore(hand: Card[]): number {
+export function calculateScore(hand: Card[]): number {
   let score = 0;
   let aceCount = 0;
 
@@ -41,7 +41,7 @@ function calculateScore(hand: Card[]): number {
   return score;
 }
 
-function dealInitialCards(deck: Card[]): {
+export function dealInitialCards(deck: Card[]): {
   remainingDeck: Card[];
   player: Player;
   dealer: Player;
@@ -54,6 +54,10 @@ function dealInitialCards(deck: Card[]): {
   dealCard(deck, dealer);
   dealCard(deck, player);
   dealCard(deck, dealer);
+
+  // calculate scores
+  player.score = calculateScore(player.hand);
+  dealer.score = calculateScore(dealer.hand);
 
   return {
     remainingDeck: deck,
