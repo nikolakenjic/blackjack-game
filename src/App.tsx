@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 import { startNewGame } from './gameLogic/gameController';
 import type { Player } from './gameLogic/gameState';
+import HandDisplay from './components/HandDisplay';
 
 function App() {
   const [player, setPlayer] = useState<Player | null>(null);
   const [dealer, setDealer] = useState<Player | null>(null);
+
+  console.log(player, dealer);
 
   useEffect(() => {
     const { player, dealer } = startNewGame();
@@ -19,16 +22,8 @@ function App() {
       <h1 className="font-bold text-3xl mb-6 text-center mt-3">
         Blackjack Game
       </h1>
-
-      <div className="mb-4">
-        <h2 className="text-xl font-semibold">Player</h2>
-        <p>Score: {player.score}</p>
-      </div>
-
-      <div>
-        <h2 className="text-xl font-semibold">Dealer</h2>
-        <p>Score: {dealer.score}</p>
-      </div>
+      <HandDisplay title="Player" score={player.score} hand={player.hand} />
+      <HandDisplay title="Dealer" score={dealer.score} hand={dealer.hand} />
     </div>
   );
 }
