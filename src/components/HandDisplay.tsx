@@ -8,7 +8,7 @@ type HandleDisplayProps = {
 
 const HandDisplay = ({ title, score, hand }: HandleDisplayProps) => {
   return (
-    <div className="mb-4 w-full max-w-sm bg-white dark:bg-gray-800 p-4 rounded shadow">
+    <div className="mb-4 w-full max-w-sm bg-white dark:bg-gray-800 p-4 rounded shadow text-white">
       <h2 className="text-xl font-semibold mb-2">{title}</h2>
       <p className="mb-2">Score: {score}</p>
       <ul className="space-y-1">
