@@ -13,6 +13,18 @@ function App() {
   const [dealer, setDealer] = useState<Player | null>(null);
 
   // console.log(player, dealer);
+  // add dark/light theme
+  useEffect(() => {
+    const theme = localStorage.getItem('theme');
+    if (theme) setTheme(theme);
+  }, []);
+
+  useEffect(() => {
+    if (theme === 'dark') document.body.classList.add('dark');
+    else document.body.classList.remove('dark');
+
+    localStorage.setItem('theme', theme);
+  }, [theme]);
 
   useEffect(() => {
     const { player, dealer } = startNewGame();
@@ -23,11 +35,7 @@ function App() {
   if (!player || !dealer) return <h1>Loading...</h1>;
 
   return (
-    <div
-      className={`bg-white dark:bg-zinc-800 p-4 flex justify-center items-center flex-col h-screen w-full relative ${
-        theme ? 'dark' : ''
-      }`}
-    >
+    <div className="bg-white dark:bg-zinc-800 p-4 flex justify-center items-center flex-col h-screen w-full relative">
       <div className="bg-zinc-100 dark:bg-zinc-700 p-2 rounded-xl absolute top-5 right-5 flex gap-2">
         <ThemeButton icon={LuSun} onClick={() => setTheme('')} />
         <ThemeButton icon={LuMoon} onClick={() => setTheme('dark')} />
@@ -44,13 +52,3 @@ function App() {
 }
 
 export default App;
-
-// <div className="bg-white dark:bg-zinc-800 grid place-items-center h-screen w-full">
-//     <div className="bg-zinc-100 p-2 rounded-xl">
-//       <button className="bg-transparent hover:bg-zinc-200 rounded-lg text-black">
-//         <LuMoon />
-//       </button>
-//       <button className="bg-transparent hover:bg-zinc-200 rounded-lg text-black">
-//         <LuSun />
-//       </button>
-//     </div>
