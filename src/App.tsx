@@ -5,6 +5,7 @@ import HandDisplay from './components/HandDisplay';
 
 import { LuSun } from 'react-icons/lu';
 import { LuMoon } from 'react-icons/lu';
+import ThemeButton from './components/ThemeButton';
 
 function App() {
   const [theme, setTheme] = useState('');
@@ -28,18 +29,8 @@ function App() {
       }`}
     >
       <div className="bg-zinc-100 dark:bg-zinc-700 p-2 rounded-xl absolute top-5 right-5 flex gap-2">
-        <button
-          className="bg-transparent hover:bg-zinc-200 dark:hover:bg-zinc-100/20 rounded-lg p-3"
-          onClick={() => setTheme('dark')}
-        >
-          <LuMoon />
-        </button>
-        <button
-          className="bg-transparent hover:bg-zinc-200 dark:hover:bg-zinc-100/20 rounded-lg p-3"
-          onClick={() => setTheme('')}
-        >
-          <LuSun />
-        </button>
+        <ThemeButton icon={LuSun} onClick={() => setTheme('')} />
+        <ThemeButton icon={LuMoon} onClick={() => setTheme('dark')} />
       </div>
 
       <h1 className="font-bold text-3xl mb-6 text-center absolute top-5 dark:text-white">
