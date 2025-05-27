@@ -63,6 +63,15 @@ function App() {
 
   return (
     <div className="bg-white dark:bg-zinc-800 p-4 flex justify-center items-center flex-col h-screen w-full relative">
+      <div className="absolute top-5 left-5">
+        <button
+          onClick={() => resetGame()}
+          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+        >
+          New Game
+        </button>
+      </div>
+
       <div className="bg-zinc-100 dark:bg-zinc-700 p-2 rounded-xl absolute top-5 right-5 flex gap-2">
         <ThemeButton icon={LuSun} onClick={() => setTheme(THEMES.LIGHT)} />
         <ThemeButton icon={LuMoon} onClick={() => setTheme(THEMES.DARK)} />
@@ -74,17 +83,6 @@ function App() {
 
       <HandDisplay title="Player" score={player.score} hand={player.hand} />
       <HandDisplay title="Dealer" score={dealer.score} hand={dealer.hand} />
-
-      <button
-        onClick={() => {
-          const { player, dealer } = startNewGame();
-          setPlayer(player);
-          setDealer(dealer);
-        }}
-        className="mt-6 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-      >
-        New Game
-      </button>
 
       <div className="flex gap-4 mt-4">
         <button
