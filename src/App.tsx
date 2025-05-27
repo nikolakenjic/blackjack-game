@@ -7,13 +7,13 @@ import { LuSun } from 'react-icons/lu';
 import { LuMoon } from 'react-icons/lu';
 import ThemeButton from './components/ThemeButton';
 import { type Theme, THEMES } from './utils/theme';
+import Button from './components/Button';
 
 function App() {
   const [theme, setTheme] = useState<Theme>(THEMES.LIGHT);
   const [player, setPlayer] = useState<Player | null>(null);
   const [dealer, setDealer] = useState<Player | null>(null);
 
-  // console.log(player, dealer);
   // add dark/light theme
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme') as Theme | null;
@@ -64,12 +64,9 @@ function App() {
   return (
     <div className="bg-white dark:bg-zinc-800 p-4 flex justify-center items-center flex-col h-screen w-full relative">
       <div className="absolute top-5 left-5">
-        <button
-          onClick={() => resetGame()}
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-        >
+        <Button variant="blue" onClick={() => resetGame()}>
           New Game
-        </button>
+        </Button>
       </div>
 
       <div className="bg-zinc-100 dark:bg-zinc-700 p-2 rounded-xl absolute top-5 right-5 flex gap-2">
@@ -85,18 +82,12 @@ function App() {
       <HandDisplay title="Dealer" score={dealer.score} hand={dealer.hand} />
 
       <div className="flex gap-4 mt-4">
-        <button
-          onClick={handleHit}
-          className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
-        >
+        <Button variant="green" onClick={handleHit}>
           Hit
-        </button>
-        <button
-          onClick={handleStand}
-          className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition"
-        >
+        </Button>
+        <Button variant="red" onClick={handleStand}>
           Stand
-        </button>
+        </Button>
       </div>
     </div>
   );
