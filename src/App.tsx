@@ -32,6 +32,28 @@ function App() {
     setDealer(dealer);
   }, []);
 
+  // Handle hit and stand
+  const handleHit = () => {
+    if (!player || !dealer) return;
+
+    const newCard = {
+      suit: 'Hearts',
+      value: (Math.floor(Math.random() * 11) + 1).toString(),
+    };
+
+    const updateHand = [...player.hand, newCard];
+    const updateScore = updateHand.reduce(
+      (sum, card) => sum + Number(card.value),
+      0
+    );
+
+    setPlayer({ ...player, hand: updateHand, score: updateScore });
+  };
+
+  const handleStand = () => {
+    console.log('stand');
+  };
+
   if (!player || !dealer) return <h1>Loading...</h1>;
 
   return (
@@ -47,6 +69,32 @@ function App() {
 
       <HandDisplay title="Player" score={player.score} hand={player.hand} />
       <HandDisplay title="Dealer" score={dealer.score} hand={dealer.hand} />
+
+      <button
+        onClick={() => {
+          const { player, dealer } = startNewGame();
+          setPlayer(player);
+          setDealer(dealer);
+        }}
+        className="mt-6 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+      >
+        New Game
+      </button>
+
+      <div className="flex gap-4 mt-4">
+        <button
+          onClick={handleHit}
+          className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
+        >
+          Hit
+        </button>
+        <button
+          onClick={handleStand}
+          className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition"
+        >
+          Stand
+        </button>
+      </div>
     </div>
   );
 }
