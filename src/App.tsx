@@ -6,31 +6,36 @@ import HandDisplay from './components/HandDisplay';
 import { LuSun } from 'react-icons/lu';
 import { LuMoon } from 'react-icons/lu';
 import ThemeButton from './components/ThemeButton';
+import { type Theme, THEMES } from './utils/theme';
 
 function App() {
-  const [theme, setTheme] = useState('');
+  const [theme, setTheme] = useState<Theme>(THEMES.LIGHT);
   const [player, setPlayer] = useState<Player | null>(null);
   const [dealer, setDealer] = useState<Player | null>(null);
 
   // console.log(player, dealer);
   // add dark/light theme
   useEffect(() => {
-    const theme = localStorage.getItem('theme');
-    if (theme) setTheme(theme);
+    const savedTheme = localStorage.getItem('theme') as Theme | null;
+    if (savedTheme === THEMES.DARK) setTheme(THEMES.DARK);
   }, []);
 
   useEffect(() => {
-    if (theme === 'dark') document.body.classList.add('dark');
-    else document.body.classList.remove('dark');
+    if (theme === THEMES.DARK) document.body.classList.add(THEMES.DARK);
+    else document.body.classList.remove(THEMES.DARK);
 
     localStorage.setItem('theme', theme);
   }, [theme]);
 
   useEffect(() => {
+    resetGame();
+  }, []);
+
+  const resetGame = () => {
     const { player, dealer } = startNewGame();
     setPlayer(player);
     setDealer(dealer);
-  }, []);
+  };
 
   // Handle hit and stand
   const handleHit = () => {
@@ -59,8 +64,8 @@ function App() {
   return (
     <div className="bg-white dark:bg-zinc-800 p-4 flex justify-center items-center flex-col h-screen w-full relative">
       <div className="bg-zinc-100 dark:bg-zinc-700 p-2 rounded-xl absolute top-5 right-5 flex gap-2">
-        <ThemeButton icon={LuSun} onClick={() => setTheme('')} />
-        <ThemeButton icon={LuMoon} onClick={() => setTheme('dark')} />
+        <ThemeButton icon={LuSun} onClick={() => setTheme(THEMES.LIGHT)} />
+        <ThemeButton icon={LuMoon} onClick={() => setTheme(THEMES.DARK)} />
       </div>
 
       <h1 className="font-bold text-3xl mb-6 text-center absolute top-5 dark:text-white">
