@@ -1,4 +1,5 @@
 import type { Card } from '../gameLogic/deck';
+import { getCardEmoji } from '../utils/cardUtils';
 
 type HandleDisplayProps = {
   title: string;
@@ -19,7 +20,7 @@ const HandDisplay = ({ title, score, hand }: HandleDisplayProps) => {
             key={i}
             className="bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded text-sm dark:text-gray-400"
           >
-            {card.value} of {card.suit}
+            {getCardEmoji(card.suit)} {card.value} of {card.suit}
           </li>
         ))}
       </ul>
