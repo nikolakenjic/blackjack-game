@@ -1,9 +1,13 @@
 import { createDeck, type Card } from './deck';
-import { calculateScore, dealInitialCards, type Player } from './gameState';
+import {
+  calculateScore,
+  dealCard,
+  dealInitialCards,
+  type Player,
+} from './gameState';
 
 export function startNewGame() {
   const deck = createDeck();
-  //   console.log('deck', deck);
 
   const { player, dealer, remainingDeck } = dealInitialCards(deck);
 
@@ -11,28 +15,25 @@ export function startNewGame() {
 }
 
 export function handlePlayerHit(player: Player, deck: Card[]) {
-  const newCard = deck[0];
-  const newDeck = deck.slice(1);
+  const newDeck = [...deck];
+  const updatedPlayer: Player = { ...player, hand: [...player.hand] };
 
-  const updateHand = [...player.hand, newCard];
-  const updateScore = calculateScore(updateHand);
+  dealCard(newDeck, updatedPlayer);
 
-  return {
-    updatedPlayer: { ...player, hand: updateHand, score: updateScore },
-    updatedDeck: newDeck,
-  };
+  updatedPlayer.score = calculateScore(updatedPlayer.hand);
+
+  return { updatedPlayer, updatedDeck: newDeck };
 }
 
 export function handleDealerTurn(dealer: Player, deck: Card[]) {
   const newDeck = [...deck];
 
-  const updatedDealer = { ...dealer };
-  while (calculateScore(updatedDealer.hand) < 17 && newDeck.length > 0) {
-    const card = newDeck.shift();
-    if (card) updatedDealer.hand.push(card);
-  }
+  const updatedDealer: Player = { ...dealer, hand: [...dealer.hand] };
 
-  updatedDealer.score = calculateScore(updatedDealer.hand);
+  while (updatedDealer.score < 17 && newDeck.length > 0) {
+    dealCard(newDeck, updatedDealer);
+    updatedDealer.score = calculateScore(updatedDealer.hand);
+  }
 
   return {
     updatedDealer,

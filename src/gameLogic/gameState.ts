@@ -11,6 +11,7 @@ export function dealCard(deck: Card[], player: Player) {
   if (!card) throw new Error('Not enough cards in deck');
 
   player.hand.push(card);
+  player.score = calculateScore(player.hand);
 }
 
 export function calculateScore(hand: Card[]): number {
@@ -21,21 +22,18 @@ export function calculateScore(hand: Card[]): number {
   for (const card of hand) {
     if (card.value === 'Ace') {
       aceCount++;
+      score += 11;
     } else if (['Jack', 'Queen', 'King'].includes(card.value)) {
       score += 10;
     } else {
-      score += parseInt(card.value);
+      score += parseInt(card.value, 10);
     }
   }
 
-  //   Add "Aces" to score
-  for (let i = 0; i < aceCount; i++) {
-    // If you can add 11 without going over 21, add 11, otherwise add 1
-    if (score + 11 <= 21) {
-      score += 11;
-    } else {
-      score += 1;
-    }
+  // adjust score for aces
+  while (score > 21 && aceCount > 0) {
+    score -= 10;
+    aceCount--;
   }
 
   return score;

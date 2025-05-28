@@ -61,7 +61,6 @@ function App() {
   useEffect(() => {
     if (player && player.score > 21) {
       setResult('You are busted! Dealer wins!');
-      resetGame();
     }
   }, [player]);
 
