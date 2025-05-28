@@ -1,5 +1,5 @@
-import type { Card } from '../gameLogic/deck';
-import { getCardEmoji } from '../utils/cardUtils';
+import type { Card } from '../../gameLogic/deck';
+import { getCardEmoji } from '../../utils/cardUtils';
 
 type HandleDisplayProps = {
   title: string;

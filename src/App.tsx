@@ -6,13 +6,13 @@ import {
   startNewGame,
 } from './gameLogic/gameController';
 import { type Player } from './gameLogic/gameState';
-import HandDisplay from './components/HandDisplay';
+import HandDisplay from './components/common/HandDisplay';
 
 import { LuSun } from 'react-icons/lu';
 import { LuMoon } from 'react-icons/lu';
-import ThemeButton from './components/ThemeButton';
+import ThemeButton from './components/common/ThemeButton';
 import { THEMES } from './utils/theme';
-import Button from './components/Button';
+import Button from './components/common/Button';
 import type { Card } from './gameLogic/deck';
 import { useTheme } from './hooks/useTheme';
 
