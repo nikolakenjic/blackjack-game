@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import {
-  handleDealerTurn,
-  handlePlayerHit,
+  handleHit,
+  handleStand,
+  isBusted,
   startNewGame,
 } from './gameLogic/gameController';
 import { type Player } from './gameLogic/gameState';
@@ -35,47 +36,12 @@ function App() {
     setResult(null);
   };
 
-  // Handle hit and stand
-  const handleHit = () => {
-    if (!player || deck.length === 0) return;
-
-    const { updatedPlayer, updatedDeck } = handlePlayerHit(player, deck);
-
-    setPlayer(updatedPlayer);
-    setDeck(updatedDeck);
-  };
-
   // Check if player is busted
   useEffect(() => {
-    if (player && player.score > 21) {
+    if (player && isBusted(player.score)) {
       setResult('You are busted! Dealer wins!');
     }
   }, [player]);
-
-  const checkWinner = (playerScore: number, dealerScore: number) => {
-    if (dealerScore > 21) {
-      setResult('Dealer is busted! You win!');
-    } else if (playerScore > dealerScore) {
-      setResult('You win!');
-    } else if (playerScore < dealerScore) {
-      setResult('Dealer wins!');
-    } else {
-      setResult('Draw!');
-    }
-  };
-
-  const handleStand = () => {
-    if (!dealer || !player || deck.length === 0) return;
-
-    const { updatedDealer, updatedDeck } = handleDealerTurn(dealer, deck);
-
-    setDealer(updatedDealer);
-    setDeck(updatedDeck);
-
-    setTimeout(() => {
-      checkWinner(player.score, updatedDealer.score);
-    }, 500);
-  };
 
   if (!player || !dealer)
     return <h1 className="text-3xl text-center mt-16">Loading...</h1>;
@@ -107,10 +73,18 @@ function App() {
       <HandDisplay title="Dealer" score={dealer.score} hand={dealer.hand} />
 
       <div className="flex gap-4 mt-4">
-        <Button variant="green" onClick={handleHit}>
+        <Button
+          variant="green"
+          onClick={() => handleHit(player, deck, setPlayer, setDeck)}
+        >
           Hit
         </Button>
-        <Button variant="red" onClick={handleStand}>
+        <Button
+          variant="red"
+          onClick={() =>
+            handleStand(dealer, player, deck, setDealer, setDeck, setResult)
+          }
+        >
           Stand
         </Button>
       </div>

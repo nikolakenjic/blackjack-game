@@ -40,3 +40,48 @@ export function handleDealerTurn(dealer: Player, deck: Card[]) {
     updatedDeck: newDeck,
   };
 }
+
+export function checkWinner(playerScore: number, dealerScore: number): string {
+  if (dealerScore > 21) return 'Dealer is busted! You win!';
+  if (playerScore > dealerScore) return 'You win!';
+  if (playerScore < dealerScore) return 'Dealer wins!';
+  return 'Draw!';
+}
+
+export function isBusted(score: number): boolean {
+  return score > 21;
+}
+
+export function handleHit(
+  player: Player,
+  deck: Card[],
+  setPlayer: React.Dispatch<React.SetStateAction<Player | null>>,
+  setDeck: React.Dispatch<React.SetStateAction<Card[]>>
+) {
+  if (!player || deck.length === 0) return;
+
+  const { updatedPlayer, updatedDeck } = handlePlayerHit(player, deck);
+
+  setPlayer(updatedPlayer);
+  setDeck(updatedDeck);
+}
+
+export function handleStand(
+  dealer: Player,
+  player: Player,
+  deck: Card[],
+  setDealer: React.Dispatch<React.SetStateAction<Player | null>>,
+  setDeck: React.Dispatch<React.SetStateAction<Card[]>>,
+  setResult: React.Dispatch<React.SetStateAction<string | null>>
+) {
+  if (!dealer || !player || deck.length === 0) return;
+
+  const { updatedDealer, updatedDeck } = handleDealerTurn(dealer, deck);
+
+  setDealer(updatedDealer);
+  setDeck(updatedDeck);
+
+  setTimeout(() => {
+    setResult(checkWinner(player.score, updatedDealer.score));
+  }, 500);
+}
