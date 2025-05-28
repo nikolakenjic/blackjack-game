@@ -18,7 +18,7 @@ const Button = ({
 }: ButtonProps) => {
   return (
     <button
-      className={`px-4 py-2 text-white rounded transition ${variantClasses[variant]} ${className}`}
+      className={`px-4 py-2 text-white rounded transition ${variantClasses[variant]} ${className} cursor-pointer`}
       {...props}
     >
       {children}

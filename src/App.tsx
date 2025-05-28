@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
-import { startNewGame } from './gameLogic/gameController';
-import type { Player } from './gameLogic/gameState';
+import {
+  handleDealerTurn,
+  handlePlayerHit,
+  startNewGame,
+} from './gameLogic/gameController';
+import { type Player } from './gameLogic/gameState';
 import HandDisplay from './components/HandDisplay';
 
 import { LuSun } from 'react-icons/lu';
@@ -8,11 +12,15 @@ import { LuMoon } from 'react-icons/lu';
 import ThemeButton from './components/ThemeButton';
 import { type Theme, THEMES } from './utils/theme';
 import Button from './components/Button';
+import type { Card } from './gameLogic/deck';
 
 function App() {
   const [theme, setTheme] = useState<Theme>(THEMES.LIGHT);
+  const [deck, setDeck] = useState<Card[]>([]);
   const [player, setPlayer] = useState<Player | null>(null);
   const [dealer, setDealer] = useState<Player | null>(null);
+
+  // console.log(deck);
 
   // add dark/light theme
   useEffect(() => {
@@ -27,39 +35,39 @@ function App() {
     localStorage.setItem('theme', theme);
   }, [theme]);
 
+  // Initialize game
   useEffect(() => {
     resetGame();
   }, []);
 
   const resetGame = () => {
-    const { player, dealer } = startNewGame();
+    const { player, dealer, remainingDeck } = startNewGame();
     setPlayer(player);
     setDealer(dealer);
+    setDeck(remainingDeck);
   };
 
   // Handle hit and stand
   const handleHit = () => {
-    if (!player || !dealer) return;
+    if (!player || deck.length === 0) return;
 
-    const newCard = {
-      suit: 'Hearts',
-      value: (Math.floor(Math.random() * 11) + 1).toString(),
-    };
+    const { updatedPlayer, updatedDeck } = handlePlayerHit(player, deck);
 
-    const updateHand = [...player.hand, newCard];
-    const updateScore = updateHand.reduce(
-      (sum, card) => sum + Number(card.value),
-      0
-    );
-
-    setPlayer({ ...player, hand: updateHand, score: updateScore });
+    setPlayer(updatedPlayer);
+    setDeck(updatedDeck);
   };
 
   const handleStand = () => {
-    console.log('stand');
+    if (!dealer || deck.length === 0) return;
+
+    const { updatedDealer, updatedDeck } = handleDealerTurn(dealer, deck);
+
+    setDealer(updatedDealer);
+    setDeck(updatedDeck);
   };
 
-  if (!player || !dealer) return <h1>Loading...</h1>;
+  if (!player || !dealer)
+    return <h1 className="text-3xl text-center mt-16">Loading...</h1>;
 
   return (
     <div className="bg-white dark:bg-zinc-800 p-4 flex justify-center items-center flex-col h-screen w-full relative">
