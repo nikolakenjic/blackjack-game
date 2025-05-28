@@ -10,29 +10,17 @@ import HandDisplay from './components/HandDisplay';
 import { LuSun } from 'react-icons/lu';
 import { LuMoon } from 'react-icons/lu';
 import ThemeButton from './components/ThemeButton';
-import { type Theme, THEMES } from './utils/theme';
+import { THEMES } from './utils/theme';
 import Button from './components/Button';
 import type { Card } from './gameLogic/deck';
+import { useTheme } from './hooks/useTheme';
 
 function App() {
-  const [theme, setTheme] = useState<Theme>(THEMES.LIGHT);
+  const { setTheme } = useTheme();
   const [deck, setDeck] = useState<Card[]>([]);
   const [player, setPlayer] = useState<Player | null>(null);
   const [dealer, setDealer] = useState<Player | null>(null);
   const [result, setResult] = useState<string | null>(null);
-
-  // add dark/light theme
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') as Theme | null;
-    if (savedTheme === THEMES.DARK) setTheme(THEMES.DARK);
-  }, []);
-
-  useEffect(() => {
-    if (theme === THEMES.DARK) document.body.classList.add(THEMES.DARK);
-    else document.body.classList.remove(THEMES.DARK);
-
-    localStorage.setItem('theme', theme);
-  }, [theme]);
 
   // Initialize game
   useEffect(() => {
