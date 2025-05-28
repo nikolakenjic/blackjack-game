@@ -8,16 +8,17 @@ import {
 import { type Player } from './gameLogic/gameState';
 import HandDisplay from './components/common/HandDisplay';
 
-import { LuSun } from 'react-icons/lu';
-import { LuMoon } from 'react-icons/lu';
-import ThemeButton from './components/common/ThemeButton';
-import { THEMES } from './utils/theme';
+// import { LuSun } from 'react-icons/lu';
+// import { LuMoon } from 'react-icons/lu';
+// import ThemeButton from './components/common/ThemeButton';
+// import { THEMES } from './utils/theme';
 import Button from './components/common/Button';
 import type { Card } from './gameLogic/deck';
 import { useTheme } from './hooks/useTheme';
+import ThemeToggle from './components/layout/ThemeToggle';
 
 function App() {
-  const { setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
   const [deck, setDeck] = useState<Card[]>([]);
   const [player, setPlayer] = useState<Player | null>(null);
   const [dealer, setDealer] = useState<Player | null>(null);
@@ -54,10 +55,7 @@ function App() {
         </Button>
       </div>
 
-      <div className="bg-zinc-100 dark:bg-zinc-700 p-2 rounded-xl absolute top-5 right-5 flex gap-2">
-        <ThemeButton icon={LuSun} onClick={() => setTheme(THEMES.LIGHT)} />
-        <ThemeButton icon={LuMoon} onClick={() => setTheme(THEMES.DARK)} />
-      </div>
+      <ThemeToggle theme={theme} setTheme={setTheme} />
 
       <h1 className="font-bold text-3xl mb-6 text-center absolute top-5 dark:text-white">
         Blackjack Game
