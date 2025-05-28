@@ -19,8 +19,7 @@ function App() {
   const [deck, setDeck] = useState<Card[]>([]);
   const [player, setPlayer] = useState<Player | null>(null);
   const [dealer, setDealer] = useState<Player | null>(null);
-
-  // console.log(deck);
+  const [result, setResult] = useState<string | null>(null);
 
   // add dark/light theme
   useEffect(() => {
@@ -45,6 +44,7 @@ function App() {
     setPlayer(player);
     setDealer(dealer);
     setDeck(remainingDeck);
+    setResult(null);
   };
 
   // Handle hit and stand
@@ -60,23 +60,21 @@ function App() {
   // Check if player is busted
   useEffect(() => {
     if (player && player.score > 21) {
-      alert('You are busted! Dealer wins.');
+      setResult('You are busted! Dealer wins!');
       resetGame();
     }
   }, [player]);
 
   const checkWinner = (playerScore: number, dealerScore: number) => {
     if (dealerScore > 21) {
-      alert('You win! Dealer is busted.');
+      setResult('Dealer is busted! You win!');
     } else if (playerScore > dealerScore) {
-      alert('You win!');
+      setResult('You win!');
     } else if (playerScore < dealerScore) {
-      alert('Dealer wins!');
+      setResult('Dealer wins!');
     } else {
-      alert('Draw!');
+      setResult('Draw!');
     }
-
-    resetGame();
   };
 
   const handleStand = () => {
@@ -87,7 +85,9 @@ function App() {
     setDealer(updatedDealer);
     setDeck(updatedDeck);
 
-    checkWinner(player.score, updatedDealer.score);
+    setTimeout(() => {
+      checkWinner(player.score, updatedDealer.score);
+    }, 500);
   };
 
   if (!player || !dealer)
@@ -109,6 +109,12 @@ function App() {
       <h1 className="font-bold text-3xl mb-6 text-center absolute top-5 dark:text-white">
         Blackjack Game
       </h1>
+
+      {result && (
+        <div className="mt-4 text-2xl font-bold dark:text-white text-center mb-6">
+          {result}
+        </div>
+      )}
 
       <HandDisplay title="Player" score={player.score} hand={player.hand} />
       <HandDisplay title="Dealer" score={dealer.score} hand={dealer.hand} />
