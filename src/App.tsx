@@ -57,13 +57,37 @@ function App() {
     setDeck(updatedDeck);
   };
 
+  // Check if player is busted
+  useEffect(() => {
+    if (player && player.score > 21) {
+      alert('You are busted! Dealer wins.');
+      resetGame();
+    }
+  }, [player]);
+
+  const checkWinner = (playerScore: number, dealerScore: number) => {
+    if (dealerScore > 21) {
+      alert('You win! Dealer is busted.');
+    } else if (playerScore > dealerScore) {
+      alert('You win!');
+    } else if (playerScore < dealerScore) {
+      alert('Dealer wins!');
+    } else {
+      alert('Draw!');
+    }
+
+    resetGame();
+  };
+
   const handleStand = () => {
-    if (!dealer || deck.length === 0) return;
+    if (!dealer || !player || deck.length === 0) return;
 
     const { updatedDealer, updatedDeck } = handleDealerTurn(dealer, deck);
 
     setDealer(updatedDealer);
     setDeck(updatedDeck);
+
+    checkWinner(player.score, updatedDealer.score);
   };
 
   if (!player || !dealer)
