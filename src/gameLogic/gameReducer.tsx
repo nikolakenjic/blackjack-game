@@ -32,14 +32,9 @@ export function gameReducer(state: GameState, action: GameAction) {
   switch (action.type) {
     case 'NEW_GAME': {
       const { player, dealer, remainingDeck } = startNewGame();
-      return {
-        ...state,
-        player,
-        dealer,
-        deck: remainingDeck,
-        result: null,
-      };
+      return { ...state, player, dealer, deck: remainingDeck, result: null };
     }
+
     case 'PLAYER_HIT': {
       if (!state.player || state.deck.length === 0) return state;
 
@@ -67,7 +62,12 @@ export function gameReducer(state: GameState, action: GameAction) {
       );
       const result = checkWinner(state.player.score, updatedDealer.score);
 
-      return { ...state, dealer: updatedDealer, deck: updatedDeck, result };
+      return {
+        ...state,
+        dealer: updatedDealer,
+        deck: updatedDeck,
+        result: result,
+      };
     }
 
     case 'SET_RESULT': {
