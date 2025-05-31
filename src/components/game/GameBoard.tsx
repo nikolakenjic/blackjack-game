@@ -29,10 +29,20 @@ const GameBoard = ({
       <HandDisplay title="Dealer" score={dealer.score} hand={dealer.hand} />
 
       <div className="flex gap-4 mt-4">
-        <Button variant="green" onClick={onHit}>
+        <Button
+          variant="green"
+          onClick={onHit}
+          disabled={!!result}
+          className={`${result ? 'opacity-50 ' : ''}`}
+        >
           Hit
         </Button>
-        <Button variant="red" onClick={onStand}>
+        <Button
+          variant="red"
+          onClick={onStand}
+          disabled={!!result}
+          className={`${result ? 'opacity-50 ' : ''}`}
+        >
           Stand
         </Button>
       </div>
