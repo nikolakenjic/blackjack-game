@@ -8,6 +8,7 @@ interface GameBoardProps {
   result: string | null;
   onHit: () => void;
   onStand: () => void;
+  onReset: () => void;
 }
 
 const GameBoard = ({
@@ -16,13 +17,21 @@ const GameBoard = ({
   result,
   onHit,
   onStand,
+  onReset,
 }: GameBoardProps) => {
   return (
     <>
       {result && (
-        <div className="mt-4 text-2xl font-bold dark:text-white text-center mb-6">
-          {result}
-        </div>
+        <>
+          <div className="mt-4 text-2xl font-bold dark:text-white text-center mb-6">
+            {result}
+          </div>
+          <div className="flex justify-center mb-7">
+            <Button variant="blue" onClick={onReset}>
+              Play Again
+            </Button>
+          </div>
+        </>
       )}
 
       <HandDisplay title="Player" score={player.score} hand={player.hand} />

@@ -33,6 +33,7 @@ function App() {
         result={result}
         onHit={onHit}
         onStand={onStand}
+        onReset={onReset}
       />
     </div>
   );
