@@ -1,6 +1,5 @@
 import type { Card } from './deck';
 import {
-  checkWinner,
   handleDealerTurn,
   handlePlayerHit,
   isBusted,
@@ -13,6 +12,7 @@ export interface GameState {
   dealer: Player | null;
   deck: Card[];
   result: string | null;
+  gameOver: boolean;
 }
 
 export const initialState: GameState = {
@@ -20,19 +20,28 @@ export const initialState: GameState = {
   dealer: null,
   deck: [],
   result: null,
+  gameOver: false,
 };
 
 export type GameAction =
   | { type: 'NEW_GAME' }
   | { type: 'PLAYER_HIT' }
   | { type: 'PLAYER_STAND' }
-  | { type: 'SET_RESULT'; payload: string };
+  | { type: 'SET_RESULT'; payload: string }
+  | { type: 'RESET_GAME_OVER' };
 
 export function gameReducer(state: GameState, action: GameAction) {
   switch (action.type) {
     case 'NEW_GAME': {
       const { player, dealer, remainingDeck } = startNewGame();
-      return { ...state, player, dealer, deck: remainingDeck, result: null };
+      return {
+        ...state,
+        player,
+        dealer,
+        deck: remainingDeck,
+        result: null,
+        gameOver: false,
+      };
     }
 
     case 'PLAYER_HIT': {
@@ -48,7 +57,8 @@ export function gameReducer(state: GameState, action: GameAction) {
         ...state,
         player: updatedPlayer,
         deck: updatedDeck,
-        result: isPlayerBusted ? 'You are busted! Dealer wins!' : state.result,
+        gameOver: isPlayerBusted,
+        result: null,
       };
     }
 
@@ -60,18 +70,22 @@ export function gameReducer(state: GameState, action: GameAction) {
         state.dealer,
         state.deck
       );
-      const result = checkWinner(state.player.score, updatedDealer.score);
 
       return {
         ...state,
         dealer: updatedDealer,
         deck: updatedDeck,
-        result: result,
+        gameOver: true,
+        result: null,
       };
     }
 
     case 'SET_RESULT': {
       return { ...state, result: action.payload };
+    }
+
+    case 'RESET_GAME_OVER': {
+      return { ...state, gameOver: false, result: null };
     }
 
     default:
