@@ -15,14 +15,17 @@ const HandDisplay = ({ title, score, hand }: HandleDisplayProps) => {
         Score: <span className="font-semibold">{score}</span>
       </p>
       <ul className="space-y-1">
-        {hand.map((card, i) => (
-          <li
-            key={i}
-            className="bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded text-sm dark:text-gray-400"
-          >
-            {getCardEmoji(card.suit)} {card.value} of {card.suit}
-          </li>
-        ))}
+        {hand
+          .slice()
+          .reverse()
+          .map((card, i) => (
+            <li
+              key={i}
+              className="bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded text-sm dark:text-gray-400"
+            >
+              {getCardEmoji(card.suit)} {card.value} of {card.suit}
+            </li>
+          ))}
       </ul>
     </div>
   );
