@@ -35,7 +35,12 @@ const GameBoard = ({
       )}
 
       <HandDisplay title="Player" score={player.score} hand={player.hand} />
-      <HandDisplay title="Dealer" score={dealer.score} hand={dealer.hand} />
+      <HandDisplay
+        title="Dealer"
+        score={dealer.score}
+        hand={dealer.hand}
+        hideSecondCard={!result}
+      />
 
       <div className="flex gap-4 mt-4">
         <Button

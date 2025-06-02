@@ -45,7 +45,7 @@ export function checkWinner(playerScore: number, dealerScore: number): string {
   if (dealerScore > 21) return 'Dealer is busted! You win!';
   if (playerScore > dealerScore) return 'You win!';
   if (playerScore < dealerScore) return 'Dealer wins!';
-  return 'Draw!';
+  return "It's a tie!";
 }
 
 export function isBusted(score: number): boolean {

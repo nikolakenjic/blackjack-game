@@ -5,17 +5,31 @@ type HandleDisplayProps = {
   title: string;
   score: number;
   hand: Card[];
+  hideSecondCard?: boolean;
 };
 
-const HandDisplay = ({ title, score, hand }: HandleDisplayProps) => {
+const HandDisplay = ({
+  title,
+  score,
+  hand,
+  hideSecondCard,
+}: HandleDisplayProps) => {
+  const displayedHand = hideSecondCard
+    ? [hand[0], ...hand.slice(1).map(() => null)]
+    : hand;
+
   return (
     <div className="mb-6 w-full max-w-sm bg-white dark:bg-gray-800 p-4 rounded-xl shadow-lg border dark:border-gray-600">
       <h2 className="text-xl font-bold mb-2 dark:text-gray-200">{title}</h2>
-      <p className="mb-3 text-sm text-gray-700 dark:text-gray-300">
-        Score: <span className="font-semibold">{score}</span>
-      </p>
+
+      {!hideSecondCard && (
+        <p className="mb-3 text-sm text-gray-700 dark:text-gray-300">
+          Score: <span className="font-semibold">{score}</span>
+        </p>
+      )}
+
       <ul className="space-y-1">
-        {hand
+        {displayedHand
           .slice()
           .reverse()
           .map((card, i) => (
@@ -23,7 +37,9 @@ const HandDisplay = ({ title, score, hand }: HandleDisplayProps) => {
               key={i}
               className="bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded text-sm dark:text-gray-400"
             >
-              {getCardEmoji(card.suit)} {card.value} of {card.suit}
+              {card
+                ? `${getCardEmoji(card.suit)} ${card.value} of ${card.suit}`
+                : '🂠 Hidden card'}
             </li>
           ))}
       </ul>
