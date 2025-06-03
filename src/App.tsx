@@ -10,7 +10,8 @@ function App() {
   const { theme, setTheme } = useTheme();
   const [state, dispatch] = useReducer(gameReducer, initialState);
 
-  const { player, dealer, result, gameOver } = state;
+  const { player, dealer, result, gameOver, stats } = state;
+  console.log(stats);
 
   // // Initialize game
   useEffect(() => {
@@ -55,7 +56,7 @@ function App() {
   return (
     <div className="bg-white dark:bg-zinc-800 p-4 flex justify-center items-center flex-col h-screen w-full relative">
       <ThemeToggle theme={theme} setTheme={setTheme} />
-      <Header onReset={onReset} />
+      <Header onReset={onReset} stats={stats} />
       <GameBoard
         player={player}
         dealer={dealer}
