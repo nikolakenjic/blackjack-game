@@ -11,10 +11,14 @@ function App() {
   const [state, dispatch] = useReducer(gameReducer, initialState);
 
   const { player, dealer, result, gameOver, stats } = state;
-  console.log(stats);
 
   // // Initialize game
   useEffect(() => {
+    const storedStats = localStorage.getItem('stats');
+    if (storedStats) {
+      dispatch({ type: 'LOAD_STATS', payload: JSON.parse(storedStats) });
+    }
+
     dispatch({ type: 'NEW_GAME' });
   }, []);
 
