@@ -33,6 +33,10 @@ function App() {
     dispatch({ type: 'RESET_GAME_OVER' });
   };
 
+  const onResetStats = () => {
+    dispatch({ type: 'RESET_STATS' });
+  };
+
   // When game ends, delay showing the final result by 1 second
   useEffect(() => {
     if (!gameOver) return;
@@ -60,7 +64,7 @@ function App() {
   return (
     <div className="bg-white dark:bg-zinc-800 p-4 flex justify-center items-center flex-col h-screen w-full relative">
       <ThemeToggle theme={theme} setTheme={setTheme} />
-      <Header onReset={onReset} stats={stats} />
+      <Header onReset={onReset} stats={stats} onResetStats={onResetStats} />
       <GameBoard
         player={player}
         dealer={dealer}

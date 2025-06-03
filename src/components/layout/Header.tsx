@@ -3,15 +3,19 @@ import Button from '../common/Button';
 interface HeaderProps {
   onReset: () => void;
   stats?: { wins: number; losses: number; ties: number };
+  onResetStats?: () => void;
 }
 
-const Header = ({ onReset, stats }: HeaderProps) => {
+const Header = ({ onReset, stats, onResetStats }: HeaderProps) => {
   return (
     <>
       <div className="absolute top-5 left-5">
         {stats && (
           <div className=" text-lg dark:text-white mb-6">
             Wins: {stats.wins} Losses: {stats.losses} Ties: {stats.ties}
+            <Button variant="blue" onClick={onResetStats}>
+              Reset Stats
+            </Button>
           </div>
         )}
         <Button variant="blue" onClick={onReset}>

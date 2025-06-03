@@ -43,7 +43,8 @@ export type GameAction =
   | {
       type: 'LOAD_STATS';
       payload: { wins: number; losses: number; ties: number };
-    };
+    }
+  | { type: 'RESET_STATS' };
 
 export function gameReducer(state: GameState, action: GameAction) {
   switch (action.type) {
@@ -123,6 +124,12 @@ export function gameReducer(state: GameState, action: GameAction) {
 
     case 'LOAD_STATS': {
       return { ...state, stats: action.payload };
+    }
+
+    case 'RESET_STATS': {
+      const resetStats = { wins: 0, losses: 0, ties: 0 };
+      localStorage.setItem('stats', JSON.stringify(resetStats));
+      return { ...state, stats: resetStats };
     }
 
     default:
