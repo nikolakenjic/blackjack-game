@@ -1,6 +1,6 @@
 import HandDisplay from '../common/HandDisplay';
 import Button from '../common/Button';
-import type { Player } from '../../gameLogic/gameState';
+import type { Player } from '../../logic/gameState';
 
 interface GameBoardProps {
   player: Player;

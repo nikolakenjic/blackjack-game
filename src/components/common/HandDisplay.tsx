@@ -1,4 +1,4 @@
-import type { Card } from '../../gameLogic/deck';
+import type { Card } from '../../logic/deck';
 import { getCardEmoji } from '../../utils/cardUtils';
 
 type HandleDisplayProps = {

@@ -3,8 +3,8 @@ import { useTheme } from './hooks/useTheme';
 import ThemeToggle from './components/layout/ThemeToggle';
 import Header from './components/layout/Header';
 import GameBoard from './components/game/GameBoard';
-import { gameReducer, initialState } from './gameLogic/gameReducer';
-import { checkWinner, isBusted } from './gameLogic/gameController';
+import { gameReducer, initialState } from './logic/gameReducer';
+import { checkWinner, isBusted } from './logic/gameController';
 
 function App() {
   const { theme, setTheme } = useTheme();
