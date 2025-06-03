@@ -1,5 +1,6 @@
 import type { Card } from './deck';
 import {
+  checkWinner,
   handleDealerTurn,
   handlePlayerHit,
   isBusted,
@@ -13,6 +14,11 @@ export interface GameState {
   deck: Card[];
   result: string | null;
   gameOver: boolean;
+  stats: {
+    wins: number;
+    losses: number;
+    ties: number;
+  };
 }
 
 export const initialState: GameState = {
@@ -21,6 +27,11 @@ export const initialState: GameState = {
   deck: [],
   result: null,
   gameOver: false,
+  stats: {
+    wins: 0,
+    losses: 0,
+    ties: 0,
+  },
 };
 
 export type GameAction =
@@ -28,7 +39,11 @@ export type GameAction =
   | { type: 'PLAYER_HIT' }
   | { type: 'PLAYER_STAND' }
   | { type: 'SET_RESULT'; payload: string }
-  | { type: 'RESET_GAME_OVER' };
+  | { type: 'RESET_GAME_OVER' }
+  | {
+      type: 'LOAD_STATS';
+      payload: { wins: number; losses: number; ties: number };
+    };
 
 export function gameReducer(state: GameState, action: GameAction) {
   switch (action.type) {
@@ -53,12 +68,18 @@ export function gameReducer(state: GameState, action: GameAction) {
       );
       const isPlayerBusted = isBusted(updatedPlayer.score);
 
+      const newStats = { ...state.stats };
+      if (isPlayerBusted) {
+        newStats.losses++;
+        localStorage.setItem('stats', JSON.stringify(newStats));
+      }
+
       return {
         ...state,
         player: updatedPlayer,
         deck: updatedDeck,
         gameOver: isPlayerBusted,
-        result: null,
+        stats: newStats,
       };
     }
 
@@ -71,12 +92,24 @@ export function gameReducer(state: GameState, action: GameAction) {
         state.deck
       );
 
+      const winnerMessage = checkWinner(
+        state.player.score,
+        updatedDealer.score
+      );
+
+      const newStats = { ...state.stats };
+      if (winnerMessage.includes('You win')) newStats.wins++;
+      else if (winnerMessage.includes('Dealer wins')) newStats.losses++;
+      else newStats.ties++;
+
+      localStorage.setItem('stats', JSON.stringify(newStats));
+
       return {
         ...state,
         dealer: updatedDealer,
         deck: updatedDeck,
         gameOver: true,
-        result: null,
+        stats: newStats,
       };
     }
 
@@ -86,6 +119,10 @@ export function gameReducer(state: GameState, action: GameAction) {
 
     case 'RESET_GAME_OVER': {
       return { ...state, gameOver: false, result: null };
+    }
+
+    case 'LOAD_STATS': {
+      return { ...state, stats: action.payload };
     }
 
     default:
