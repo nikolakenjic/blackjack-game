@@ -5,13 +5,23 @@ export function useGameActions(
   dispatch: Dispatch<GameAction>,
   gameOver: boolean
 ) {
+  // Check if game is over before dispatching action
+  const isGameOver = useCallback(
+    (action: GameAction) => {
+      if (!gameOver) dispatch(action);
+      else alert('Game is already over! Please start a new game.');
+    },
+    [dispatch, gameOver]
+  );
+
+  //   Actions
   const onHit = useCallback(() => {
-    if (!gameOver) dispatch({ type: 'PLAYER_HIT' });
-  }, [dispatch, gameOver]);
+    isGameOver({ type: 'PLAYER_HIT' });
+  }, [isGameOver]);
 
   const onStand = useCallback(() => {
-    if (!gameOver) dispatch({ type: 'PLAYER_STAND' });
-  }, [dispatch, gameOver]);
+    isGameOver({ type: 'PLAYER_STAND' });
+  }, [isGameOver]);
 
   const onReset = useCallback(() => {
     dispatch({ type: 'NEW_GAME' });
