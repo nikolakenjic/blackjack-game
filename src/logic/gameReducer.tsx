@@ -19,6 +19,8 @@ export interface GameState {
     losses: number;
     ties: number;
   };
+  gameStarted: boolean;
+  deposit: number;
 }
 
 export const initialState: GameState = {
@@ -32,6 +34,8 @@ export const initialState: GameState = {
     losses: 0,
     ties: 0,
   },
+  gameStarted: false,
+  deposit: 0,
 };
 
 export type GameAction =
@@ -44,7 +48,8 @@ export type GameAction =
       type: 'LOAD_STATS';
       payload: { wins: number; losses: number; ties: number };
     }
-  | { type: 'RESET_STATS' };
+  | { type: 'RESET_STATS' }
+  | { type: 'INIT_GAME'; deposit: number };
 
 export function gameReducer(state: GameState, action: GameAction) {
   switch (action.type) {
@@ -130,6 +135,14 @@ export function gameReducer(state: GameState, action: GameAction) {
       const resetStats = { wins: 0, losses: 0, ties: 0 };
       localStorage.setItem('stats', JSON.stringify(resetStats));
       return { ...state, stats: resetStats };
+    }
+
+    case 'INIT_GAME': {
+      return {
+        ...state,
+        gameStarted: true,
+        deposit: action.deposit,
+      };
     }
 
     default:

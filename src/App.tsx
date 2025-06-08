@@ -8,6 +8,7 @@ import { useInitializeGame } from './hooks/useInitializeGame';
 import { useGameResult } from './hooks/useGameResult';
 import { useGameActions } from './hooks/useGameActions';
 import { Toaster } from 'react-hot-toast';
+import StartScreen from './components/game/StartScreen';
 
 function App() {
   const { theme, setTheme } = useTheme();
@@ -25,6 +26,17 @@ function App() {
 
   // When game ends, delay showing the final result by 1 second
   useGameResult({ player, dealer, gameOver, dispatch });
+
+  if (!state.gameStarted) {
+    return (
+      <div className="bg-white dark:bg-zinc-800 p-4 flex justify-center items-center flex-col h-screen w-full relative">
+        <Toaster position="top-center" />
+        <StartScreen
+          onStart={(deposit) => dispatch({ type: 'INIT_GAME', deposit })}
+        />
+      </div>
+    );
+  }
 
   if (!player || !dealer)
     return (
