@@ -32,5 +32,12 @@ export function useGameActions(
     dispatch({ type: 'RESET_STATS' });
   }, [dispatch]);
 
-  return { onHit, onStand, onReset, onResetStats };
+  const onStartGame = useCallback(
+    (deposit: number) => {
+      dispatch({ type: 'INIT_GAME', deposit });
+    },
+    [dispatch]
+  );
+
+  return { onHit, onStand, onReset, onResetStats, onStartGame };
 }
