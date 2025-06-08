@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 
 interface StartScreenProps {
   onStart: (deposit: number) => void;
@@ -8,7 +9,7 @@ const StartScreen = ({ onStart }: StartScreenProps) => {
 
   const handleStart = () => {
     if (deposit < 100) {
-      alert('Deposit must be at least $100');
+      toast.error('Deposit must be at least $100');
       return;
     }
 
@@ -16,23 +17,32 @@ const StartScreen = ({ onStart }: StartScreenProps) => {
   };
 
   return (
-    <div className="text-center space-y-4">
-      <h1 className="text-3xl font-bold text-zinc-800 dark:text-white">
-        Welcome to Blackjack Game
+    <div className="text-center space-y-6 bg-white dark:bg-zinc-900 p-10 rounded-xl shadow-lg w-[90%] max-w-md">
+      <h1 className="text-4xl font-extrabold text-zinc-800 dark:text-white">
+        🃏 Welcome to Blackjack
       </h1>
 
-      <div>
-        <label className="block mb-2 font-medium text-lg">Enter Deposit</label>
+      <div className="text-left space-y-2">
+        <label
+          htmlFor="deposit"
+          className="block text-lg font-medium text-zinc-700 dark:text-zinc-200"
+        >
+          Enter Your Deposit ($)
+        </label>
         <input
+          id="deposit"
           type="number"
           value={deposit}
           onChange={(e) => setDeposit(Number(e.target.value))}
-          className="px-4 py-2 border rounded-md w-64"
+          className="w-full px-4 py-2 text-lg border border-zinc-300 dark:border-zinc-700 rounded-md bg-white dark:bg-zinc-800 text-zinc-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+          placeholder="Minimum $100"
+          min={0}
         />
       </div>
+
       <button
         onClick={handleStart}
-        className="bg-purple-600 text-white px-6 py-2 rounded-md hover:bg-purple-700 transition"
+        className="w-full bg-purple-600 text-white text-lg py-2 rounded-md transition duration-300 hover:bg-purple-700 disabled:opacity-50"
       >
         Start Game
       </button>
