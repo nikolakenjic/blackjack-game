@@ -20,7 +20,8 @@ export interface GameState {
     ties: number;
   };
   gameStarted: boolean;
-  deposit: number;
+  bankroll: number;
+  currentBet: number;
 }
 
 export const initialState: GameState = {
@@ -35,7 +36,8 @@ export const initialState: GameState = {
     ties: 0,
   },
   gameStarted: false,
-  deposit: 0,
+  bankroll: 0,
+  currentBet: 10,
 };
 
 export type GameAction =
@@ -49,11 +51,14 @@ export type GameAction =
       payload: { wins: number; losses: number; ties: number };
     }
   | { type: 'RESET_STATS' }
-  | { type: 'INIT_GAME'; deposit: number };
+  | { type: 'SET_DEPOSIT'; payload: number }
+  | { type: 'SET_BET'; payload: number };
 
 export function gameReducer(state: GameState, action: GameAction) {
   switch (action.type) {
     case 'NEW_GAME': {
+      if (state.bankroll < state.currentBet) return state;
+
       const { player, dealer, remainingDeck } = startNewGame();
       return {
         ...state,
@@ -62,6 +67,7 @@ export function gameReducer(state: GameState, action: GameAction) {
         deck: remainingDeck,
         result: null,
         gameOver: false,
+        bankroll: state.bankroll - state.currentBet,
       };
     }
 
@@ -137,11 +143,18 @@ export function gameReducer(state: GameState, action: GameAction) {
       return { ...state, stats: resetStats };
     }
 
-    case 'INIT_GAME': {
+    case 'SET_DEPOSIT': {
       return {
         ...state,
+        bankroll: action.payload,
         gameStarted: true,
-        deposit: action.deposit,
+      };
+    }
+
+    case 'SET_BET': {
+      return {
+        ...state,
+        currentBet: action.payload,
       };
     }
 

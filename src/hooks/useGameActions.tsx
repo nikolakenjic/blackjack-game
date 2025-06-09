@@ -34,7 +34,7 @@ export function useGameActions(
 
   const onStartGame = useCallback(
     (deposit: number) => {
-      dispatch({ type: 'INIT_GAME', deposit });
+      dispatch({ type: 'SET_DEPOSIT', payload: deposit });
     },
     [dispatch]
   );
