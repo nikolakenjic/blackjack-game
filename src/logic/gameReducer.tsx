@@ -37,7 +37,7 @@ export const initialState: GameState = {
   },
   gameStarted: false,
   bankroll: 0,
-  currentBet: 10,
+  currentBet: 0,
 };
 
 export type GameAction =
